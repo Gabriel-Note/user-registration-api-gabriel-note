@@ -55,7 +55,7 @@ jobs:
     needs: test
     # 'ref/heads/main' innebär att testet måste ha körts från main???????
     if: success() && github.ref == 'refs/heads/main'
-    # if: success() && github.ref == 'ref/heads/workflow-testing'
+    # if: success() && github.ref == 'refs/heads/workflow-testing'
     steps:
       - name: Deploy till produktion (simulerat)
         run: echo "Deployar user-registration-api till produktion"
