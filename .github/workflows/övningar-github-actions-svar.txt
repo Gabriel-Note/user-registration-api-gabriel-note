@@ -1,0 +1,9 @@
+Övning 1
+
+1. rad 28, där det står needs: build1234
+2. De ska köras i separata miljöer och startar med en helt ny, färsk virtuell maskin för att alltid kunna producera samma resultat
+3. Då de båda körs i sin egen VM så är inget sparat från den ena till en andra. så projektet behöver få rättigheten att köra vilket vi gör med chmod +x ./mvnw
+    +x är för att ge executable rättigheter till filen/mappen.
+    ./mvnw är kommando för maven wrapper, där om det inte finns maven installerat så installerar den det åt dig i din VM
+4. Den kommer hoppa över test helt
+5. grå/överhoppat
