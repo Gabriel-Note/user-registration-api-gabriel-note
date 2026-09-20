@@ -42,6 +42,10 @@ jobs:
       - name: Kör test
         run: ./mvnw -B test
 
+      - name: Informationsteg vid misslyckat test
+        if: failure()
+        run: echo "Läs surefire-rapporten"
+
       - name: Ladda upp surefire-rapporter
         if: always()
         uses: actions/upload-artifact@v4
