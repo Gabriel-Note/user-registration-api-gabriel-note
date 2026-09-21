@@ -31,6 +31,7 @@ jobs:
         run: ./mvnw -B test
 
       - name: Ladda upp surefire rapporter
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-result
