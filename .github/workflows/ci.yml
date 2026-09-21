@@ -29,3 +29,10 @@ jobs:
 
       - name: Kör tester
         run: ./mvnw -B test
+
+      - name: Ladda upp surefire rapporter
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-result
+          path: target/surefire-reports/
+          if-no-files-found: warn
