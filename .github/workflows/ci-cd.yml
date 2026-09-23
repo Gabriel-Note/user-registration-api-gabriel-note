@@ -1,0 +1,71 @@
+name:
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: namn här
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hämta kod
+        uses: actions/checkout@v4
+
+      - name: hämtar Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Gör maven wrapper körbar
+        run: chmod +x ./mvnw
+
+#      - name: kör test
+#        run: ./mvnw -B tests
+
+      - name: Bygg applikationen utan att köra tester igen
+        run: ./mvnw -B -DskipTests clean package
+
+      - name: Skapa surefire rapporter
+        uses: actions/upload-artifact@v4
+        with:
+          name: user.registration-api-jar
+          path: target/user-registration-api-*.jar
+          if-no-files-found: error
+
+  test:
+    name: Kör automatiska tester
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Hämta koden
+        uses: actions/checkout@v4
+
+      - name: Hämta Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Gör maven körbar
+        run: chmod +x ./mvnw
+
+      - name: kör tester
+        run: ./mvnw -B test
+
+      - name: Ladda upp surefire rapporter
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: target/surefire-reports/
+          if-no-files-found: warn
