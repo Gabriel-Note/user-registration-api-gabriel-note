@@ -36,7 +36,7 @@ jobs:
       - name: Skapa surefire rapporter
         uses: actions/upload-artifact@v4
         with:
-          name: user.registration-api-jar
+          name: user-registration-api-jar
           path: target/user-registration-api-*.jar
           if-no-files-found: error
 
@@ -69,3 +69,24 @@ jobs:
           name: test-results
           path: target/surefire-reports/
           if-no-files-found: warn
+
+  deploy:
+    name: Simulerad deploy till staging
+    runs-on: ubuntu-latest
+    needs: test
+    if: success() && github.event_name=='push' && github.ref=='refs/heads/main'
+    environment: staging
+
+    steps:
+      - name: Hämta byggresultat
+        uses: actions/download-artifact@v4
+        with:
+          name: user-registration-api-jar
+          path: deploy
+
+      - name: Visa vad som skulle deployas
+        run: |
+          echo "Alla tester ät godkända på main"
+          echo "Simulerar deploy till staging"
+          ls-lh deploy
+          echo "En verklig deploy skulle använda miljöns säkra credentials"
